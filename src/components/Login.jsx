@@ -5,31 +5,33 @@ import toast, { Toaster } from "react-hot-toast";
 function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const [userInfo, setUserInfo] = useState({});
 
-  useEffect(() => {
-    axios
-      .post("https://reqres.in/api/login", userInfo)
+
+  // useEffect(() => {
+   
+  // }, [userInfo]);
+
+  const submitHandeler = (e) => {
+    e.preventDefault();
+    const source = axios.CancelToken.source()
+    const newInfo = {
+      email,
+      password,
+    };
+     axios
+      .post("https://reqres.in/api/login", newInfo)
       .then((res) => {
         console.log(res);
         toast.success("Login Successfully");
         return res;
       })
       .catch((error) => {
-        toast.error("Your email or password is incorrect");
+        toast.error(error.message);
       });
-  }, [userInfo]);
-
-  const submitHandeler = (e) => {
-    e.preventDefault();
-    const newInfo = {
-      email,
-      password,
-    };
-    setUserInfo(newInfo);
+      return ()=> controler?.abort()
   };
 
-  //   {
+  //   { 
   //     "email": "eve.holt@reqres.in",
   //     "password": "cityslicka"
   // }
